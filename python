@@ -1,0 +1,66 @@
+from scitools.std import *
+import numpy as np
+import time
+
+def extract2(filename):
+    infile = open(filename,'r')
+    t=[]
+    for line in infile:
+       words =line.split()
+       t.append(float(words[0]))
+    return array(t)  
+def extract(filename):
+    infile = open(filename,'r')
+    i=0
+    counter=0
+
+    for line in infile:
+
+        words= line.split()
+       
+        if counter==0:
+            n=int(words[0])
+            m=int(words[1])
+            T=float(words[2])
+            dt=float(words[3])
+            X=float(words[4])
+            dx=float(words[5])
+            matrix=zeros((n,m))
+            t=zeros((n))
+
+        if counter>0:
+
+            for j in range(len(words)):
+                matrix[i-1, j]=float(words[j])    
+        if len(words)<1:
+            break
+        i+=1
+        counter+=1
+    
+    infile.close()
+    return n,m,T,dt,X,dx, matrix
+
+n,m,T,dt,X,dx,vx_analytisk=extract('analytisk.txt')
+n,m,T,dt,X,dx,vx_forward=extract('forward.txt')
+n,m,T,dt,X,dx,vx_backward=extract('backward.txt')
+n,m,T,dt,X,dx,vx_crank_nicolson=extract('crank_nicolson.txt')
+t=extract2('timearray.txt')
+
+x=linspace(0,X,m)
+#ymax=np.max(vx)
+#ymax+=ymax*0.1
+#print vx_forward[0,:]
+#print vx_forward[1,:]
+
+for i in range(len(t)):
+    #plot(x,vx_analytisk[i,:], xlabel='x', ylabel='v', title='t=%f' % t[i], legend= 'analytisk')
+    #hold('on')
+
+    #plot(x,vx_forward[i,:],legend='forward')    
+    #plot(x,vx_backward[i,:],legend='backward')
+    #plot(x,vx_crank_nicolson[i,:],legend='Crank-Nicolson.')
+    #plot(x,vx_backward[i,:]-vx_analytisk[i,:],xlabel='x', ylabel='v', title='t=%f' % t[i], legend= 'backward-analytisk')
+    plot(x,vx_forward[i,:]-vx_analytisk[i,:],xlabel='x', ylabel='v', title='t=%f' % t[i], legend= 'forward-analytisk')
+    raw_input()
+    hold('off')
+   
